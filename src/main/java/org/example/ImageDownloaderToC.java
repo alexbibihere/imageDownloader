@@ -77,7 +77,7 @@ public class ImageDownloaderToC {
 
             // 这里应该替换为实际的API调用代码
             // 访问1000次然后添加到imageUrls
-            for(int i=0;i<1000;i++){
+            for(int i=0;i<9999;i++){
                 imageUrls.add(IMAGE_API_URL);
             }
 
