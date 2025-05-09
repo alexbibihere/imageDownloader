@@ -11,7 +11,7 @@ import java.util.stream.Stream;
  */
 public class practiceClass {
     public static void main(String[] args) {
-        containsDuplicate(new int[]{1,2,3,4,5,6,7,8,9,10});
+        System.out.println(frequencySortMap(new int[]{ 4, 6, 2, 2, 6, 4, 4, 3, 3, 4, 6, 6 }));
     }
 
     public static int add(int number) {
@@ -219,5 +219,125 @@ public class practiceClass {
         }
         }
         return map;
+    }
+    /**
+     * 给无序的map排序 按key的字典排序
+     */
+    public static Map<String, Integer> sortMap(Map<String, Integer> map) {
+        // write your code here
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
+        Map<String, Integer> result = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }
+
+    /**
+     * 频率排序,返回map， key为出现的次数，value为对应次数的集合
+     */
+    public static Map<Integer, List<Integer>> frequencySortMap(int[] nums) {
+//        Map<Integer, Integer> frequencyMap = new HashMap<>();
+//        for (int num : nums) {
+//            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+//        }
+//
+//        // 2. 按出现次数分组
+//        Map<Integer, List<Integer>> result = new HashMap<>();
+//        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
+//            int num = entry.getKey();
+//            int frequency = entry.getValue();
+//
+//            if (!result.containsKey(frequency)) {
+//                result.put(frequency, new ArrayList<>());
+//            }
+//            result.get(frequency).add(num);
+//        }
+//
+//        // 3. 对每组内的数字进行排序
+//        for (List<Integer> numbers : result.values()) {
+//            Collections.sort(numbers);
+//        }
+//
+//        // 4. 按出现次数从大到小排序
+//        List<Map.Entry<Integer, List<Integer>>> sortedEntries =
+//                new ArrayList<>(result.entrySet());
+//
+//        Collections.sort(sortedEntries, new Comparator<Map.Entry<Integer, List<Integer>>>() {
+//            @Override
+//            public int compare(Map.Entry<Integer, List<Integer>> e1,
+//                               Map.Entry<Integer, List<Integer>> e2) {
+//                return e2.getKey().compareTo(e1.getKey()); // 降序排序
+//            }
+//        });
+//
+//        // 5. 构建有序的结果Map
+//        Map<Integer, List<Integer>> finalResult = new LinkedHashMap<>();
+//        for (Map.Entry<Integer, List<Integer>> entry : sortedEntries) {
+//            finalResult.put(entry.getKey(), entry.getValue());
+//        }
+//
+//        return finalResult;
+        // write your code here
+        //排序
+        Arrays.sort(nums);
+        //计算出现次数
+        //计数出现次数表key为数字，value为出现次数
+        Map<Integer, Integer> countMap = new LinkedHashMap<>();
+        Map<Integer, List<Integer>> resultMap=new TreeMap<>(Comparator.reverseOrder());
+        for (int i : nums) {
+            countMap.compute(i, (k, num) -> num == null ? 1 : num + 1);
+        }
+        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+            //判断map中是否存在对应key,不存在创建，存在直接根据key值添加
+            if(resultMap.containsKey(entry.getValue())){
+                resultMap.get(entry.getValue()).add(entry.getKey());
+            }else{
+                List<Integer> result=new ArrayList<>();
+                resultMap.put(entry.getValue(),result);
+                result.add(entry.getKey());
+            }
+        }
+        return resultMap;
+    }
+
+    /*
+    * 字符串去重保持原来顺序,用set实现
+     */
+    public static String removeDuplicates(String str) {
+        Set<Character> set = new LinkedHashSet<>();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            set.add(str.charAt(i));
+        }
+        for (char c : set) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 两个数组合并成一个数组，要求合并后的数组是按顺序排列的 ,treeset 实现
+     */
+    public static int[] merge(int[] arr1, int[] arr2) {
+        Set<Integer> set = new TreeSet<>();
+        for (int i : arr1) {
+            set.add(i);
+        }
+        for (int i : arr2) {
+            set.add(i);
+        }
+        int[] result = new int[set.size()];
+        int index = 0;
+        for (int i : set) {
+            result[index++] = i;
+        }
+        return result;
     }
 }
