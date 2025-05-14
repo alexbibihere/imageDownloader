@@ -340,4 +340,207 @@ public class practiceClass {
         }
         return result;
     }
+
+    /**
+     * 写一个线程
+     */
+    public static void thread(){
+        Thread thhread = new Thread(new Runnable(){
+            @Override
+            public void run(){
+                System.out.println("hello world");
+            }
+        });
+        thhread.start();
+    }
+
+    /*
+    寻找数组最大值
+     */
+    public int maxNum(List<Integer> nums) {
+        // write your code here 取第一个数 循环遍历比对 得到最大值
+        int index = nums.get(0);
+        for(int i : nums){
+            if(index<i){
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    /*
+    * 数组中出现次数最多的数字
+     */
+    public int maxNum2(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i : nums) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        int max = 0;
+        int result = 0;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() > max) {
+                max = entry.getValue();
+                result = entry.getKey();
+            }
+        }
+        return result;
+    }
+
+    /*
+    * 斐波那契数列 0 1 1 2 3 5
+     */
+    public int fibonacci(int n) { // 0 1 1 2 3 5
+        if (n == 0) {    // 0        a b c
+            return 0;
+        }
+        if (n == 1) {
+            return 1;
+        }
+        int a = 0;
+        int b = 1;
+        for (int i = 2; i <= n; i++) {
+            int c = a + b;
+            a = b;
+            b = c;
+        }
+        return b;
+    }
+
+    /**
+     * 最高频率的ip ["192.168.1.1","192.118.2.1","192.168.1.1"]
+     */
+    public static String highestFrequencyIP(String[] ips) {
+        HashMap<String, Integer> map = new HashMap<>();
+        for (String ip : ips) {
+            String[] arr = ip.split("\\.");
+            int sum = 0;
+            for (String s : arr) {
+                sum = sum * 256 + Integer.parseInt(s);
+            }
+            map.put(ip, map.getOrDefault(ip, 0) + 1);
+        }
+        int max = 0;
+        String result = "";
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() > max) {
+                max = entry.getValue();
+                result = entry.getKey();
+            }
+        }
+        return result;
+    }
+    public class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) { val = x;  next = null; }
+    }
+    /**
+     * 删除排序链中的重复元素
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        // write your code here
+        if (head == null || head.next == null){
+            return head;
+        }
+
+        ListNode p1 = head;
+
+
+        while(p1.next != null){
+            if (p1.val == p1.next.val){
+                p1.next = p1.next.next;// 如果相邻两个元素相同，则删除第二个元素，指向第三个元素
+            } else {
+                p1 = p1.next;
+            }
+        }
+        return head;
+    }
+    /**
+     * 最小子数组
+     */
+    public int minSubArrayLen(List<Integer> nums) {
+        // 循环遍历两次
+        int n = nums.size();
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<=n;j++){
+                int sum = 0;
+                for(int k=i;k<j;k++){
+                    sum += nums.get(k);
+                }
+                if(sum == 0){
+                    return j-i;
+                }
+            }
+        }
+        return 0;
+    }
+    /**
+     * 主元素，找到数组中出现次数最多的元素，并且这个元素在数组中出现的次数大于数组长度的一半
+     */
+    public int majorityNumber(List<Integer> nums) {
+        // write your code here 统计hashmap value大于count的数字
+        int count =nums.size()/2;
+        HashMap<Integer,Integer> hashMap=new HashMap<>();
+        for(int i:nums){
+            hashMap.put(i,hashMap.getOrDefault(i,0)+1);
+        }
+        int result =0;
+        for(Map.Entry<Integer,Integer> entry:hashMap.entrySet() ){
+            if(entry.getValue()>count){
+                result = entry.getKey();
+            }
+        }
+        return result;
+    }
+    /**
+     * 使用lambda表达式排序
+     */
+    public void sortByLengh(String[] strArr){
+        Arrays.stream(strArr)
+                .sorted(Comparator.comparing(String::length))
+                .forEach(System.out::println);
+    }
+    public class Person {
+        String name;
+        int age;
+        int number;
+        public Person(String name, int age, int number) {
+            this.name = name;
+            this.age = age;
+            this.number = number;
+        }
+        public String toString() {
+            return "number = " + number + ", name = " + name + ", age = " + age;
+        }
+
+    }
+    /**
+     * 乘车按序就坐 ，正常情况下乘客按序列号 number 的升序顺序排队就座，当乘客中有年龄 age 小于 5 岁（不含 5 岁）的幼儿乘客或是年龄 age 大于 60 岁（不含 60 岁）的老年人乘客时，优先按序就座。现在给你一个乘客列表
+     */
+    public void carPooling(List<Person> list) {
+        // write your code here  两个列表分离优先级高 和正常人员
+        List<Person> newList = new ArrayList<>();
+        List<Person> normalList = new ArrayList<>();
+        for(Person person:list){
+            if(person.age<5 || person.age>60){
+                newList.add(person);
+            }else{
+                normalList.add(person);
+            }
+        }
+        // 对list按照number排序
+        Collections.sort(normalList, new Comparator<Person>() {
+            @Override
+            public int compare(Person o1, Person o2) {
+                return o1.number - o2.number;
+            }
+        });
+        // 然后把list添加到resultList中
+        List<Person> resultList = new ArrayList<>(newList);
+        resultList.addAll(normalList);
+        for(Person p:resultList){
+            System.out.println(p);
+        }
+    }
 }
