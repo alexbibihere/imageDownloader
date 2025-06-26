@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -11,7 +12,14 @@ import java.util.stream.Stream;
  */
 public class practiceClass {
     public static void main(String[] args) {
-        System.out.println(frequencySortMap(new int[]{ 4, 6, 2, 2, 6, 4, 4, 3, 3, 4, 6, 6 }));
+        List<Integer> list = new ArrayList<>();
+        list.add(2);
+        list.add(1);
+        list.add(6);
+        list.add(9);
+        list.add(3);
+        list.add(4);
+        System.out.println(largestNumber(list));
     }
 
     public static int add(int number) {
@@ -542,5 +550,124 @@ public class practiceClass {
         for(Person p:resultList){
             System.out.println(p);
         }
+    }
+    /**
+     * linkedlist 去除重复元素
+     */
+    public LinkedList<String> removeDuplicates(LinkedList<String> list) {
+        HashSet<String> set = new HashSet<>();
+        LinkedList<String> newList = new LinkedList<>();
+        for (String s : list) {
+            if (!set.contains(s)) {
+                set.add(s);
+                newList.add(s);
+            }
+        }
+        return newList;
+    }
+
+
+    public class Student {
+        String name;
+        int age;
+        public Student(String name, int age) {
+            this.name= name;
+            this.age = age;
+        }
+        public String toString() {
+            return "[name: " + name + ", age: " + age + "]";
+        }
+    }
+
+    /**
+     * 爽排序的student集合
+     */
+        public static Map<Student, Integer> getSortMap(List<Student> list) {
+            // write your code here
+            Map<Student, Integer> map = new TreeMap<>(new Comparator<Student>() {
+                @Override
+                public int compare(Student o1, Student o2) {
+                    if (o1.age!= o2.age){
+                        return o1.age-o2.age;
+                    }else {
+                        return o1.name.compareTo(o2.name);
+                    }
+                }
+            });
+            // A-->B-->C
+
+            Integer num=0;
+            for (Student stu:list) {
+                map.put(stu,num);
+                num++;
+
+            }
+            return map;
+        }
+
+    /**
+     * 按照字典顺序排序
+     */
+    public List<String> sortString(List<String> list) {
+            // write your code here
+            Collections.sort(list, new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    return o1.compareTo(o2);
+                    }
+            });
+            return list;
+    }
+    /**
+     *  最大的数字,找到每个位置最大的数字
+     *  不能改变集合顺序，只能进行删除操作。
+     * 第 i 个数据大于 0 ~ i-1 中任何一个数据（0 < i < n）。
+     * 如果满足如上两个条件，我们称每个位置上的数据为 最大的数字。
+     *
+     */
+    public static List<Integer> largestNumber(List<Integer> list) {
+        List<Integer> result = new ArrayList<>();
+        int temp = 0;
+        for (Integer num : list) {
+            if(num > temp){
+                temp = num;
+                result.add(num);
+            }
+        }
+        return result;
+    }
+    public static void printMap(Map<String, String> map) {
+        // write your code here
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+    }
+    /**
+     * 极差之和
+     */
+    public int sumOfDifferences(int[] arr){
+        // 先找到两个最大值 和两个最小值，相同的值为一个值
+        //先给arr排序
+        Arrays.sort(arr);
+        int max1 = arr[arr.length-1];
+        int max2 = arr[arr.length-2];
+        int max3 = arr[arr.length-3];
+        int min1 = arr[0];
+        int min2 = arr[1];
+        int min3 = arr[2];
+        int sum = 0;
+        if(max1-min1>max2-min2){
+            sum = max1-min1+max2-min2;
+        }else{
+            sum = max2-min2+max1-min1;
+        }
+        for(int i=2;i<arr.length-1;i++){
+            if(arr[i]-arr[i-1]>arr[i+1]-arr[i]){
+                sum+=arr[i]-arr[i-1];
+            }else{
+                sum+=arr[i+1]-arr[i];
+            }
+        }
+        return sum;
     }
 }
