@@ -17,7 +17,7 @@ public class VideoCutter {
 
     public static void main(String[] args) {
         // 默认从当前目录开始
-        File rootDir = new File("E:\\2025 java学习视频\\面试题\\场景题-高频\\b");
+        File rootDir = new File("C:\\B站视频");
         System.out.println("开始处理目录: " + rootDir.getAbsolutePath());
 
         processDirectory(rootDir);
@@ -52,19 +52,18 @@ public class VideoCutter {
 
     private static void processVideoFile(File file) {
         String oldName = file.getName();
-        String prefix = "【Java场景题100道】";
-        String suffix = "【Java场景题100道】";
+//        String prefix = ".f30280";
+        String suffix = ".f30080";
 
         // 检查是否同时包含前缀和后缀
-        if (oldName.contains(prefix) && oldName.contains(suffix)) {
+        if ( oldName.contains(suffix)) {
             // 获取前缀之前的内容
-            String beforePrefix = oldName.substring(0, oldName.indexOf(prefix));
+//            String beforePrefix = oldName.substring(0, oldName.indexOf(prefix)) +.mp4;
 
             // 获取后缀之后的内容
-            String afterSuffix = oldName.substring(oldName.lastIndexOf(suffix) + suffix.length());
 
             // 构建新文件名
-            String newName = beforePrefix + afterSuffix;
+            String newName = oldName.substring(oldName.lastIndexOf(suffix) + suffix.length());
 
             // 处理可能出现的连续空格
             newName = newName.replaceAll("\\s+", " ").trim();
